@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#fff0f6">
+  <meta name="description" content="Pink Pixel — a Hello Kitty inspired calculator with a Y2K personality.">
+
+  <title>Pink Pixel | Calculator</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <div class="floating-decor decor-one">🎀</div>
+    <div class="floating-decor decor-two">✧</div>
+    <div class="floating-decor decor-three">💗</div>
+    <div class="floating-decor decor-four">✦</div>
+    <div class="floating-decor decor-five">🎀</div>
+    <div class="floating-decor decor-six">✧</div>
+
+  <main class="app-shell">
+
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Pink Pixel home">
+        <span class="brand-bow">🎀</span>
+        <span>PINK PIXEL</span>
+      </a>
+
+      <span class="status">● READY TO CALCULATE</span>
+    </header>
+
+    <section class="workspace" aria-label="Calculator application">
+
+      <aside class="mascot-panel">
+        <span class="eyebrow">YOUR LITTLE MATH BUDDY</span>
+
+        <div class="mascot-art" aria-label="Hello Kitty inspired mascot">
+          <img class="mascot-face" src="images/hello-kitty-face.jpg" alt="Hello Kitty">
+          <span class="mascot-heart">♡</span>
+        </div>
+
+        <h1>Hello, cutie!</h1>
+        <p>Your calculations, but make them cute.</p>
+
+        <div class="sticker">✦ MADE OF MATH & MAGIC ✦</div>
+      </aside>
+  
+<div class="calculator-stickers" aria-hidden="true">
+  <span class="sticker-bow">🎀</span>
+  <span class="sticker-sparkle">✧</span>
+</div>
+
+      <section class="calculator" aria-label="Calculator">
+        <div class="mode-bar">
+          <button class="mode active" type="button">Standard</button>
+          <button class="mode" type="button" disabled>Scientific</button>
+          <button class="mode" type="button" disabled>Root Access</button>
+        </div>
+
+        <div class="display">
+          <p id="expression" aria-label="Expression">Ready when you are ♡</p>
+          <output id="result" aria-live="polite">0</output>
+        </div>
+
+        
+<div class="keypad" id="keypad">
+  <button class="key utility" data-action="clear">AC</button>
+  <button class="key utility" data-action="paren" data-value="(">(</button>
+  <button class="key utility" data-action="paren" data-value=")">)</button>
+  <button class="key operator" data-action="operator" data-value="/">÷</button>
+
+  <button class="key" data-action="digit" data-value="7">7</button>
+  <button class="key" data-action="digit" data-value="8">8</button>
+  <button class="key" data-action="digit" data-value="9">9</button>
+  <button class="key operator" data-action="operator" data-value="*">×</button>
+
+  <button class="key" data-action="digit" data-value="4">4</button>
+  <button class="key" data-action="digit" data-value="5">5</button>
+  <button class="key" data-action="digit" data-value="6">6</button>
+  <button class="key operator" data-action="operator" data-value="-">−</button>
+
+  <button class="key" data-action="digit" data-value="1">1</button>
+  <button class="key" data-action="digit" data-value="2">2</button>
+  <button class="key" data-action="digit" data-value="3">3</button>
+  <button class="key operator" data-action="operator" data-value="+">+</button>
+
+  <button class="key utility" data-action="sign">+/−</button>
+  <button class="key utility" data-action="percent">%</button>
+  <button class="key utility" data-action="backspace">⌫</button>
+  <button class="key equals" data-action="equals">=</button>
+
+  <button class="key zero" data-action="digit" data-value="0">0</button>
+  <button class="key" data-action="decimal">.</button>
+</div>
+
+
+        <footer class="calculator-footer">
+          <span>♡ PINK PIXEL</span>
+          <span>MADE FOR YOUR MIND</span>
+        </footer>
+      </section>
+    </section>
+
+    <footer class="page-footer">
+      A LITTLE PIXEL MAGIC <span>✧</span> A LOT OF PRECISION
+    </footer>
+
+  </main>
+</body>
+</html>
