@@ -8,6 +8,16 @@
 const resultDisplay = document.getElementById("result");
 const expressionDisplay = document.getElementById("expression");
 const keypad = document.getElementById("keypad");
+const historyList = document.getElementById("history-list");
+const clearHistoryButton = document.getElementById("clear-history");
+const historyToggle = document.getElementById("history-toggle");
+const historyArrow = document.getElementById("history-arrow");
+const themeToggle = document.getElementById("theme-toggle");
+const modeButtons = document.querySelectorAll(".mode");
+const scientificKeys = document.getElementById("scientific-keys");
+const rootKeys = document.getElementById("root-keys");
+const rootStatus = document.getElementById("root-status");
+console.log("Clear history button:", clearHistoryButton);
 
 if (!resultDisplay || !expressionDisplay || !keypad) {
     throw new Error("PINK PIXEL: calculator HTML elements are missing.");
@@ -21,6 +31,44 @@ if (!resultDisplay || !expressionDisplay || !keypad) {
 let expression = "";
 let lastResult = null;
 let justEvaluated = false;
+let calculationHistory = JSON.parse(
+  localStorage.getItem("pinkPixelHistory") || "[]"
+);
+
+
+function renderHistory() {
+    historyList.innerHTML = "";
+
+    if (calculationHistory.length === 0) {
+        const emptyMessage = document.createElement("li");
+        emptyMessage.className = "history-empty";
+        emptyMessage.textContent = "Your little calculations will appear here ♡";
+        historyList.appendChild(emptyMessage);
+        return;
+    }
+
+    calculationHistory.forEach(item => {
+        const historyItem = document.createElement("li");
+        historyItem.className = "history-item";
+
+        const historyExpression = document.createElement("span");
+        historyExpression.textContent = item.expression;
+
+        const historyResult = document.createElement("strong");
+        historyResult.textContent = `= ${item.result}`;
+
+        historyItem.append(historyExpression, historyResult);
+        historyList.appendChild(historyItem);
+    });
+}
+
+function clearHistory() {
+    calculationHistory = [];
+
+    localStorage.removeItem("pinkPixelHistory");
+
+    renderHistory();
+}
 
 const operatorSymbols = {
     "+": "+",
@@ -386,6 +434,18 @@ function calculateResult() {
 
         expressionDisplay.textContent = displayExpression(expression);
         resultDisplay.textContent = formatNumber(result);
+        calculationHistory.unshift({
+    expression: displayExpression(expression),
+    result: formatNumber(result)
+});
+
+localStorage.setItem(
+    "pinkPixelHistory",
+    JSON.stringify(calculationHistory)
+);
+
+renderHistory();
+
         animateResult();
     } catch (error) {
         expressionDisplay.textContent =
@@ -395,6 +455,434 @@ function calculateResult() {
         lastResult = null;
         justEvaluated = false;
     }
+}
+
+function calculateSquareRoot() {
+    let value;
+
+    try {
+        if (justEvaluated && lastResult !== null) {
+            value = lastResult;
+        } else if (expression) {
+            value = evaluateExpression(expression);
+        } else {
+            return;
+        }
+
+        if (value < 0) {
+            throw new Error("Cannot find the square root of a negative number.");
+        }
+
+        const result = Math.sqrt(value);
+
+        expression = String(result);
+        lastResult = result;
+        justEvaluated = true;
+
+        expressionDisplay.textContent = `√(${formatNumber(value)})`;
+        resultDisplay.textContent = formatNumber(result);
+
+        calculationHistory.unshift({
+            expression: `√(${formatNumber(value)})`,
+            result: formatNumber(result)
+        });
+
+        localStorage.setItem(
+            "pinkPixelHistory",
+            JSON.stringify(calculationHistory)
+        );
+
+        renderHistory();
+        animateResult();
+
+    } catch (error) {
+        expressionDisplay.textContent =
+            error.message || "Invalid expression";
+
+        resultDisplay.textContent = "Error";
+        lastResult = null;
+        justEvaluated = false;
+    }
+}
+
+
+function calculateSquare() {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    const result = value * value;
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent = `(${formatNumber(value)})²`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `(${formatNumber(value)})²`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent =
+      error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+
+function calculateCube() {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    const result = value * value * value;
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent = `(${formatNumber(value)})³`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `(${formatNumber(value)})³`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent = error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+function calculateCubeRoot() {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    const result = Math.cbrt(value);
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent = `∛(${formatNumber(value)})`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `∛(${formatNumber(value)})`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent = error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+function calculateAbsoluteValue() {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    const result = Math.abs(value);
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent = `|${formatNumber(value)}|`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `|${formatNumber(value)}|`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent = error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+function calculateReciprocal() {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    if (value === 0) {
+      throw new Error("Cannot divide by zero!");
+    }
+
+    const result = 1 / value;
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent = `1/(${formatNumber(value)})`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `1/(${formatNumber(value)})`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent = error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+
+function calculateFactorial() {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    if (!Number.isInteger(value) || value < 0) {
+      throw new Error("Factorial needs a whole number ≥ 0.");
+    }
+
+    if (value > 170) {
+      throw new Error("That number is too large!");
+    }
+
+    let result = 1;
+
+    for (let i = 2; i <= value; i++) {
+      result *= i;
+    }
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent = `${value}!`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `${value}!`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent = error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+function calculateTrig(functionName) {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    // Convert degrees to radians for JavaScript's math functions.
+    const radians = value * (Math.PI / 180);
+    let result;
+
+    if (functionName === "sin") {
+      result = Math.sin(radians);
+    } else if (functionName === "cos") {
+      result = Math.cos(radians);
+    } else if (functionName === "tan") {
+      if (Math.abs(Math.cos(radians)) < 1e-10) {
+        throw new Error("Tangent is undefined at this angle.");
+      }
+      result = Math.tan(radians);
+    } else {
+      return;
+    }
+
+    // Clean up tiny floating-point errors, such as sin(180°).
+    if (Math.abs(result) < 1e-10) {
+      result = 0;
+    }
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent =
+      `${functionName}(${formatNumber(value)}°)`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `${functionName}(${formatNumber(value)}°)`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent =
+      error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
+}
+
+
+function calculateLog(functionName) {
+  let value;
+
+  try {
+    if (justEvaluated && lastResult !== null) {
+      value = lastResult;
+    } else if (expression) {
+      value = evaluateExpression(expression);
+    } else {
+      return;
+    }
+
+    if (value <= 0) {
+      throw new Error("Logarithms need a number greater than zero.");
+    }
+
+    const result =
+      functionName === "log"
+        ? Math.log10(value)
+        : Math.log(value);
+
+    expression = String(result);
+    lastResult = result;
+    justEvaluated = true;
+
+    expressionDisplay.textContent =
+      `${functionName}(${formatNumber(value)})`;
+    resultDisplay.textContent = formatNumber(result);
+
+    calculationHistory.unshift({
+      expression: `${functionName}(${formatNumber(value)})`,
+      result: formatNumber(result)
+    });
+
+    localStorage.setItem(
+      "pinkPixelHistory",
+      JSON.stringify(calculationHistory)
+    );
+
+    renderHistory();
+    animateResult();
+  } catch (error) {
+    expressionDisplay.textContent =
+      error.message || "Invalid expression";
+    resultDisplay.textContent = "Error";
+    lastResult = null;
+    justEvaluated = false;
+  }
 }
 
 // ==========================================
@@ -509,6 +997,10 @@ keypad.addEventListener("click", function (event) {
             inputParenthesis(value);
             break;
 
+        case "sqrt":
+         calculateSquareRoot();
+         break;
+
         case "equals":
             calculateResult();
             break;
@@ -577,3 +1069,130 @@ document.addEventListener("keydown", function (event) {
 // ==========================================
 
 updateDisplay();
+renderHistory();
+
+clearHistoryButton.addEventListener("click", clearHistory);
+
+function setTheme(isLavender) {
+  document.body.classList.toggle("lavender-theme", isLavender);
+
+  themeToggle.textContent = isLavender
+    ? "🎀 Cotton Candy"
+    : "💜 Lavender Dream";
+
+  themeToggle.setAttribute(
+    "aria-label",
+    isLavender
+      ? "Switch to Cotton Candy theme"
+      : "Switch to Lavender Dream theme"
+  );
+
+  localStorage.setItem(
+    "pinkPixelTheme",
+    isLavender ? "lavender" : "pink"
+  );
+}
+
+themeToggle.addEventListener("click", () => {
+  const isLavender = !document.body.classList.contains("lavender-theme");
+  setTheme(isLavender);
+});
+
+const savedTheme = localStorage.getItem("pinkPixelTheme");
+setTheme(savedTheme === "lavender");
+
+let currentMode = "standard";
+
+modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.disabled) return;
+
+    currentMode = button.dataset.mode || "standard";
+
+    modeButtons.forEach((modeButton) => {
+      modeButton.classList.toggle("active", modeButton === button);
+    });
+
+    console.log("Calculator mode:", currentMode);
+    scientificKeys.hidden = currentMode !== "scientific";
+    rootKeys.hidden = currentMode !== "root";
+    rootStatus.hidden = currentMode !== "root";
+  });
+});
+
+
+scientificKeys.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+
+  if (!button || !scientificKeys.contains(button)) {
+    return;
+  }
+
+  const { value } = button.dataset;
+
+  
+
+if (value === "square") {
+  calculateSquare();
+} else if (["sin", "cos", "tan"].includes(value)) {
+  calculateTrig(value);
+
+} else if (["log", "ln"].includes(value)) {
+  calculateLog(value);
+} else if (value === "pi") {
+  const result = Math.PI;
+
+  expression = String(result);
+  lastResult = result;
+  justEvaluated = true;
+
+  expressionDisplay.textContent = "π";
+  resultDisplay.textContent = formatNumber(result);
+
+  calculationHistory.unshift({
+    expression: "π",
+    result: formatNumber(result)
+  });
+
+  localStorage.setItem(
+    "pinkPixelHistory",
+    JSON.stringify(calculationHistory)
+  );
+
+  renderHistory();
+  animateResult();
+}
+});
+
+
+rootKeys.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+
+  if (!button || !rootKeys.contains(button)) return;
+
+  const { value } = button.dataset;
+
+  
+
+
+if (value === "cube") {
+  calculateCube();
+} else if (value === "reciprocal") {
+  calculateReciprocal();
+} else if (value === "factorial") {
+  calculateFactorial();
+
+} else if (value === "cuberoot") {
+  calculateCubeRoot();
+} else if (value === "abs") {
+  calculateAbsoluteValue();
+}
+});
+
+historyToggle.addEventListener("click", () => {
+  const isOpen = historyToggle.getAttribute("aria-expanded") === "true";
+
+  historyToggle.setAttribute("aria-expanded", String(!isOpen));
+  historyList.classList.toggle("history-open", !isOpen);
+  historyArrow.textContent = "♡";
+});

@@ -26,13 +26,27 @@
   <main class="app-shell">
 
     <header class="topbar">
-      <a class="brand" href="#" aria-label="Pink Pixel home">
-        <span class="brand-bow">🎀</span>
-        <span>PINK PIXEL</span>
-      </a>
+  <a class="brand" href="#" aria-label="Pink Pixel home">
+    <span class="brand-bow">🎀</span>
+    <span>PINK PIXEL</span>
+  </a>
 
-      <span class="status">● READY TO CALCULATE</span>
-    </header>
+  <span class="status">● READY TO CALCULATE</span>
+
+  <button
+  id="theme-toggle"
+  class="theme-toggle"
+  type="button"
+  aria-label="Switch to Lavender Dream theme"
+>
+  💜 Lavender Dream
+</button>
+
+  <div class="calculator-stickers" aria-hidden="true">
+    <span class="sticker-bow">🎀</span>
+    <span class="sticker-sparkle">✧</span>
+  </div>
+</header>
 
     <section class="workspace" aria-label="Calculator application">
 
@@ -50,16 +64,13 @@
         <div class="sticker">✦ MADE OF MATH & MAGIC ✦</div>
       </aside>
   
-<div class="calculator-stickers" aria-hidden="true">
-  <span class="sticker-bow">🎀</span>
-  <span class="sticker-sparkle">✧</span>
-</div>
+
 
       <section class="calculator" aria-label="Calculator">
         <div class="mode-bar">
           <button class="mode active" type="button">Standard</button>
-          <button class="mode" type="button" disabled>Scientific</button>
-          <button class="mode" type="button" disabled>Root Access</button>
+          <button class="mode" type="button" data-mode="scientific">Scientific</button>
+          <button class="mode" type="button" data-mode="root">Root Access</button>
         </div>
 
         <div class="display">
@@ -67,9 +78,33 @@
           <output id="result" aria-live="polite">0</output>
         </div>
 
-        
+  
+   <div class="scientific-keys" id="scientific-keys" hidden>
+  <button class="key utility" data-action="scientific" data-value="sqrt">√</button>
+  <button class="key utility" data-action="scientific" data-value="square">x²</button>
+  <button class="key utility" data-action="scientific" data-value="sin">sin</button>
+  <button class="key utility" data-action="scientific" data-value="cos">cos</button>
+  <button class="key utility" data-action="scientific" data-value="tan">tan</button>
+  <button class="key utility" data-action="scientific" data-value="log">log</button>
+  <button class="key utility" data-action="scientific" data-value="ln">ln</button>
+  <button class="key utility" data-action="scientific" data-value="pi">π</button>
+</div>     
+
+<div class="root-status" id="root-status" hidden>
+  🔓 SYSTEM UNLOCKED <span>♡ ROOT ACCESS</span>
+</div>
+
+<div class="root-keys" id="root-keys" hidden>
+  <button class="key utility" data-action="root" data-value="cube">x³</button>
+  <button class="key utility" data-action="root" data-value="reciprocal">1/x</button>
+  <button class="key utility" data-action="root" data-value="factorial">n!</button>
+  <button class="key utility" data-action="root" data-value="cuberoot">∛</button>
+  <button class="key utility" data-action="root" data-value="abs">|x|</button>
+</div>
+
 <div class="keypad" id="keypad">
   <button class="key utility" data-action="clear">AC</button>
+  <button class="key utility" data-action="sqrt" title="Square root">√</button>
   <button class="key utility" data-action="paren" data-value="(">(</button>
   <button class="key utility" data-action="paren" data-value=")">)</button>
   <button class="key operator" data-action="operator" data-value="/">÷</button>
@@ -99,10 +134,35 @@
 </div>
 
 
+        
+        <section class="history-panel" aria-label="Calculation history">
+          
+<div class="history-heading">
+  <button
+    id="history-toggle"
+    class="history-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="history-list"
+  >
+    <span>♡ Calculation History</span>
+    <span id="history-arrow" aria-hidden="true">♡</span>
+  </button>
+
+  <button id="clear-history" type="button">Clear history</button>
+</div>
+
+
+          <ul id="history-list" aria-live="polite">
+            <li class="history-empty">Your little calculations will appear here ♡</li>
+          </ul>
+        </section>
+
         <footer class="calculator-footer">
           <span>♡ PINK PIXEL</span>
           <span>MADE FOR YOUR MIND</span>
         </footer>
+
       </section>
     </section>
 
